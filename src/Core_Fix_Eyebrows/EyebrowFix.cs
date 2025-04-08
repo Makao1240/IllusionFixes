@@ -58,13 +58,13 @@ namespace IllusionFixes
                     SetEyebrows(character.charInfo, (byte)value);
             });
 
-            var dropdownForegroundEyes = GameObject.Find("StudioScene").transform.Find("Canvas Main Menu/02_Manipulate/00_Chara/02_Kinematic/05_Etc/Eyes Draw/Dropdown").GetComponent<Dropdown>();
-            dropdownForegroundEyes.onValueChanged.AddListener(value =>
-            {
-                var characters = StudioAPI.GetSelectedCharacters();
-                foreach (var character in characters)
-                    SetEyeliners(character.charInfo, (byte)value);
-            });
+            //var dropdownForegroundEyes = GameObject.Find("StudioScene").transform.Find("Canvas Main Menu/02_Manipulate/00_Chara/02_Kinematic/05_Etc/Eyes Draw/Dropdown").GetComponent<Dropdown>();
+            //dropdownForegroundEyes.onValueChanged.AddListener(value =>
+            //{
+            //    var characters = StudioAPI.GetSelectedCharacters();
+            //    foreach (var character in characters)
+            //        SetEyeliners(character.charInfo, (byte)value);
+            //});
         }
 
         //TODO: only do any of this allocation and deallocation of rendertextures when in a scene with an actual camera :^)
@@ -143,25 +143,25 @@ namespace IllusionFixes
             }
 
             //Eyeliners
-            {
-                Toggle[] tglForegroundEye = ccFaceMenu.cvsEye02.tglForegroundEye;
+            //{
+            //    Toggle[] tglForegroundEye = ccFaceMenu.cvsEye02.tglForegroundEye;
 
-                tglForegroundEye[0].onValueChanged.AddListener(value =>
-                {
-                    if (value)
-                        SetEyeliners(MakerAPI.GetCharacterControl(), 0);
-                });
-                tglForegroundEye[1].onValueChanged.AddListener(value =>
-                {
-                    if (value)
-                        SetEyeliners(MakerAPI.GetCharacterControl(), 1);
-                });
-                tglForegroundEye[2].onValueChanged.AddListener(value =>
-                {
-                    if (value)
-                        SetEyeliners(MakerAPI.GetCharacterControl(), 2);
-                });
-            }
+            //    tglForegroundEye[0].onValueChanged.AddListener(value =>
+            //    {
+            //        if (value)
+            //            SetEyeliners(MakerAPI.GetCharacterControl(), 0);
+            //    });
+            //    tglForegroundEye[1].onValueChanged.AddListener(value =>
+            //    {
+            //        if (value)
+            //            SetEyeliners(MakerAPI.GetCharacterControl(), 1);
+            //    });
+            //    tglForegroundEye[2].onValueChanged.AddListener(value =>
+            //    {
+            //        if (value)
+            //            SetEyeliners(MakerAPI.GetCharacterControl(), 2);
+            //    });
+            //}
         }
 
         /// <summary>
@@ -201,35 +201,35 @@ namespace IllusionFixes
         /// </summary>
         /// <param name="chaControl">Character this will be applied to</param>
         /// <param name="value">Value to set. 0 = from config, 1 = behind hair, 2 = in front of hair</param>
-        public static void SetEyeliners(ChaControl chaControl, byte value)
-        {
-            if (MakerAPI.InsideMaker && !MakerAPI.InsideAndLoaded)
-                return;
+        //public static void SetEyeliners(ChaControl chaControl, byte value)
+        //{
+        //    if (MakerAPI.InsideMaker && !MakerAPI.InsideAndLoaded)
+        //        return;
 
-            if (value == 0) //From config
-                if (Manager.Config.EtcData.ForegroundEyes)
-                    EnableEyeliners(chaControl);
-                else
-                    DisableEyeliners(chaControl);
-            else if (value == 1) //Behind hair
-                DisableEyeliners(chaControl);
-            else if (value == 2) //In front of hair
-                EnableEyeliners(chaControl);
-        }
+        //    if (value == 0) //From config
+        //        if (Manager.Config.EtcData.ForegroundEyes)
+        //            EnableEyeliners(chaControl);
+        //        else
+        //            DisableEyeliners(chaControl);
+        //    else if (value == 1) //Behind hair
+        //        DisableEyeliners(chaControl);
+        //    else if (value == 2) //In front of hair
+        //        EnableEyeliners(chaControl);
+        //}
 
-        public static void EnableEyeliners(ChaControl chaControl)
-        {
-            chaControl.transform.FindLoop("cf_O_eyeline").GetOrAddComponent<Blitty>();
-            chaControl.transform.FindLoop("cf_O_eyeline_low").GetOrAddComponent<Blitty>();
-        }
+        //public static void EnableEyeliners(ChaControl chaControl)
+        //{
+        //    chaControl.transform.FindLoop("cf_O_eyeline").GetOrAddComponent<Blitty>();
+        //    chaControl.transform.FindLoop("cf_O_eyeline_low").GetOrAddComponent<Blitty>();
+        //}
 
-        public static void DisableEyeliners(ChaControl chaControl)
-        {
-            var blitty = chaControl.transform.FindLoop("cf_O_eyeline").GetComponent<Blitty>();
-            Destroy(blitty);
-            blitty = chaControl.transform.FindLoop("cf_O_eyeline_low").GetComponent<Blitty>();
-            Destroy(blitty);
-        }
+        //public static void DisableEyeliners(ChaControl chaControl)
+        //{
+        //    var blitty = chaControl.transform.FindLoop("cf_O_eyeline").GetComponent<Blitty>();
+        //    Destroy(blitty);
+        //    blitty = chaControl.transform.FindLoop("cf_O_eyeline_low").GetComponent<Blitty>();
+        //    Destroy(blitty);
+        //}
     }
 
     internal static class Hooks
@@ -259,15 +259,15 @@ namespace IllusionFixes
         /// <summary>
         /// Happens after the character is loaded and eyeliner SMR initialized
         /// </summary>
-        [HarmonyPostfix, HarmonyPatch(typeof(ChaControl), nameof(ChaControl.ChangeSettingEyelineUp))]
-        private static void ChaControl_ChangeSettingEyelineUp(ChaControl __instance)
-        {
-            //Only care about maker and studio, other modes have problems that aren't worth the effort
-            if (KoikatuAPI.GetCurrentGameMode() == GameMode.MainGame)
-                return;
+        //[HarmonyPostfix, HarmonyPatch(typeof(ChaControl), nameof(ChaControl.ChangeSettingEyelineUp))]
+        //private static void ChaControl_ChangeSettingEyelineUp(ChaControl __instance)
+        //{
+        //    //Only care about maker and studio, other modes have problems that aren't worth the effort
+        //    if (KoikatuAPI.GetCurrentGameMode() == GameMode.MainGame)
+        //        return;
 
-            EyebrowFix.SetEyeliners(__instance, __instance.chaFile.custom.face.foregroundEyes);
-        }
+        //    EyebrowFix.SetEyeliners(__instance, __instance.chaFile.custom.face.foregroundEyes);
+        //}
     }
 
     public class Blitty : MonoBehaviour
